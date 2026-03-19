@@ -6,70 +6,115 @@
   "icon": "dist/icon/logo_bg_none.png",
   "version": "0.2.3",
   "galleryBanner": {
-		"color": "#070707",
-		"theme": "dark"
-	},
+    "color": "#070707",
+    "theme": "dark"
+  },
   "keywords": [
     "Custom VSCode Theme",
     "Custom VSCode Workbench",
     "Custom VSCode Workbench css"
   ],
   "engines": {
-    "vscode": "^1.86.0"
+    "vscode": "^1.110.0"
   },
   "categories": [
-    "Other", "Themes"
+    "Other",
+    "Themes"
   ],
-
   "repository": {
     "type": "git",
     "url": "https://github.com/drpidman/drkryz-roundedtabs"
   },
-  
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:drkryz-roundedtabs.configure_now",
+    "onCommand:drkryz-roundedtabs.restore"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "configuration": {
-      "title": "roundedtabs vscode config"
+      "title": "RoundedTabs",
+      "properties": {
+        "drkryz-roundedtabs.autoReapplyOnStartup": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically reapply the managed rounded CSS block if VS Code updates its workbench CSS."
+        },
+        "drkryz-roundedtabs.stylePreset": {
+          "type": "string",
+          "enum": [
+            "balanced",
+            "tabs-only"
+          ],
+          "default": "balanced",
+          "markdownEnumDescriptions": [
+            "Rounds tabs, sidebar, activity bar, panel, quick input, notifications, and safe list surfaces.",
+            "Rounds only the editor tabs plus the main sidebar and auxiliary containers."
+          ],
+          "description": "Controls how broadly RoundedTabs applies rounded surfaces."
+        },
+        "drkryz-roundedtabs.radius": {
+          "type": "number",
+          "default": 12,
+          "minimum": 6,
+          "maximum": 24,
+          "description": "Base corner radius used by the RoundedTabs managed CSS block."
+        },
+        "drkryz-roundedtabs.tabGap": {
+          "type": "number",
+          "default": 6,
+          "minimum": 0,
+          "maximum": 12,
+          "description": "Gap used between editor tabs when RoundedTabs is active."
+        },
+        "drkryz-roundedtabs.installPath": {
+          "type": "string",
+          "default": "",
+          "description": "Optional custom VS Code installation root, resources folder, or direct path to workbench.desktop.main.css."
+        }
+      }
     },
     "commands": [
       {
         "command": "drkryz-roundedtabs.configure_now",
-        "title": "Configure Theme",
-        "shortTitle": "Configure Drkryz RoundedTabs Theme",
-        "category": "roundedtabs"
+        "title": "Apply Rounded Tabs",
+        "shortTitle": "Apply Rounded Tabs",
+        "category": "RoundedTabs"
       },
       {
         "command": "drkryz-roundedtabs.restore",
         "title": "Restore Defaults",
-        "shortTitle": "Restore vscode default workbench style",
-        "category": "roundedtabs"
+        "shortTitle": "Restore VS Code Defaults",
+        "category": "RoundedTabs"
       }
     ]
   },
   "scripts": {
-    "vscode:prepublish": "yarn run package",
+    "vscode:prepublish": "npm run package",
     "compile": "webpack",
     "watch": "webpack --watch",
     "package": "webpack --mode production --devtool hidden-source-map",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.86.0",
-    "@types/mocha": "^10.0.6",
-    "@types/node": "18.x",
-    "@typescript-eslint/eslint-plugin": "^6.19.1",
-    "@typescript-eslint/parser": "^6.19.1",
-    "eslint": "^8.56.0",
-    "typescript": "^5.3.3",
+    "@types/mocha": "10.0.10",
+    "@types/node": "^25.5.0",
+    "@types/vscode": "^1.110.0",
+    "@typescript-eslint/eslint-plugin": "^8.57.1",
+    "@typescript-eslint/parser": "^8.57.1",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "2.5.2",
+    "eslint": "^10.0.3",
     "ts-loader": "^9.5.1",
-    "webpack": "^5.90.0",
-    "webpack-cli": "^5.1.4",
-    "@vscode/test-cli": "^0.0.4",
-    "@vscode/test-electron": "^2.3.9"
+    "typescript": "^5.9.3",
+    "webpack": "^5.105.4",
+    "webpack-cli": "^7.0.2"
+  },
+  "dependencies": {
+    "postcss": "^8.5.8"
   }
 }
