@@ -61,6 +61,7 @@ suite('Extension Test Suite', () => {
 		assert.ok(patchedCss.includes('--drkryz-roundedtabs-editor-surface: var(--vscode-editorGroupHeader-tabsBackground'));
 		assert.ok(patchedCss.includes('background-color: var(--drkryz-roundedtabs-sidebar-surface) !important;'));
 		assert.ok(patchedCss.includes('background-color: var(--drkryz-roundedtabs-panel-surface) !important;'));
+		assert.ok(patchedCss.includes('.monaco-workbench .part.sidebar > .title'));
 	});
 
 	test('tabs-only preset skips extended workbench rounding', () => {

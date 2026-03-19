@@ -56,6 +56,12 @@ export function buildRoundedTabsCssBlock(
     --drkryz-roundedtabs-widget-surface: var(--vscode-quickInput-background, var(--vscode-editorWidget-background));
     --drkryz-roundedtabs-notification-surface: var(--vscode-notifications-background, var(--vscode-editorWidget-background));
     --drkryz-roundedtabs-menu-surface: var(--vscode-menu-background, var(--vscode-editorWidget-background));
+    --drkryz-roundedtabs-chrome-surface: var(--vscode-editor-background);
+}
+
+.monaco-workbench .part.editor > .content .editor-group-container,
+.monaco-workbench .part.editor > .content .editor-group-container > .editor-container {
+    background-color: transparent !important;
 }
 
 .monaco-workbench .part.editor > .content .editor-group-container > .title {
@@ -71,6 +77,11 @@ export function buildRoundedTabsCssBlock(
 .monaco-workbench .part.editor > .content .editor-group-container > .title .tabs-container {
     gap: var(--drkryz-roundedtabs-gap);
     background-color: transparent !important;
+}
+
+.monaco-workbench .part.editor > .content .editor-group-container > .title .tabs-and-actions-container {
+    border-radius: inherit !important;
+    background-clip: padding-box !important;
 }
 
 .monaco-workbench .part.editor > .content .editor-group-container > .title .tabs-container {
@@ -101,6 +112,8 @@ export function buildRoundedTabsCssBlock(
 }
 
 #workbench\\.parts\\.sidebar,
+.monaco-workbench .part.sidebar,
+.monaco-workbench .part.auxiliarybar,
 .monaco-workbench .part.sidebar > .content,
 .monaco-workbench .part.auxiliarybar > .content {
     border-radius: var(--drkryz-roundedtabs-radius) !important;
@@ -108,14 +121,32 @@ export function buildRoundedTabsCssBlock(
     background-clip: padding-box !important;
 }
 
+.monaco-workbench .part.sidebar,
+.monaco-workbench .part.auxiliarybar {
+    overflow: hidden !important;
+}
+
+.monaco-workbench .part.sidebar > .title,
+.monaco-workbench .part.sidebar > .composite.title,
+.monaco-workbench .part.auxiliarybar > .title,
+.monaco-workbench .part.auxiliarybar > .composite.title,
+.monaco-workbench .pane-composite-part.sidebar > .title,
+.monaco-workbench .pane-composite-part.auxiliarybar > .title {
+    border-radius: var(--drkryz-roundedtabs-radius) var(--drkryz-roundedtabs-radius) 0 0 !important;
+    background-color: var(--drkryz-roundedtabs-sidebar-surface) !important;
+    background-clip: padding-box !important;
+}
+
 .monaco-workbench .part.sidebar > .content,
 .monaco-workbench .part.auxiliarybar > .content {
     overflow: hidden !important;
+    border-radius: 0 0 var(--drkryz-roundedtabs-radius) var(--drkryz-roundedtabs-radius) !important;
 }
 
 .monaco-workbench .part.sidebar .monaco-scrollable-element[role="presentation"] > .split-view-container,
 .monaco-workbench .part.auxiliarybar .monaco-scrollable-element[role="presentation"] > .split-view-container {
     border-radius: var(--drkryz-roundedtabs-radius-md) !important;
+    background-color: transparent !important;
 }
 
 .monaco-workbench .part.sidebar .pane > .pane-header,
@@ -204,6 +235,12 @@ export function buildRoundedTabsCssBlock(
 .monaco-workbench > .notifications-toasts .notification-list-item {
     border-radius: var(--drkryz-roundedtabs-radius-xs) !important;
     background-clip: padding-box !important;
+}
+
+.monaco-workbench,
+.monaco-workbench .part.editor,
+.monaco-workbench .part.editor > .content {
+    background-color: var(--drkryz-roundedtabs-chrome-surface) !important;
 }
 `);
     }
