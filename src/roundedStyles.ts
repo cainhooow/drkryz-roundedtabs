@@ -74,6 +74,7 @@ function buildBaseRoundedCss(styleOptions: RoundedTabsStyleOptions): string {
     --drkryz-roundedtabs-duration-fast: 140ms;
     --drkryz-roundedtabs-duration-normal: 220ms;
     --drkryz-roundedtabs-duration-slow: 280ms;
+    --drkryz-roundedtabs-duration-layout: 260ms;
     --drkryz-roundedtabs-ease: cubic-bezier(0.22, 1, 0.36, 1);
     --drkryz-roundedtabs-ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
     --drkryz-roundedtabs-editor-surface: var(--vscode-editorGroupHeader-tabsBackground, var(--vscode-editor-background));
@@ -99,6 +100,9 @@ function buildBaseRoundedCss(styleOptions: RoundedTabsStyleOptions): string {
     border-radius: var(--drkryz-roundedtabs-radius) !important;
     background-color: var(--drkryz-roundedtabs-editor-surface) !important;
     background-clip: padding-box !important;
+    box-sizing: border-box !important;
+    padding-top: 5px;
+    padding-bottom: 3px;
     padding-left: 6px;
     padding-right: 6px;
     overflow: hidden !important;
@@ -113,15 +117,21 @@ function buildBaseRoundedCss(styleOptions: RoundedTabsStyleOptions): string {
 .monaco-workbench .part.editor > .content .editor-group-container > .title .tabs-and-actions-container {
     border-radius: inherit !important;
     background-clip: padding-box !important;
+    align-items: center;
+    padding-top: 2px;
 }
 
 .monaco-workbench .part.editor > .content .editor-group-container > .title .tabs-container {
-    padding-bottom: 4px;
+    align-items: center;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 
 .monaco-workbench .part.editor > .content .editor-group-container > .title .tabs-container > .tab {
     border-radius: var(--drkryz-roundedtabs-radius) !important;
     margin-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
     overflow: hidden !important;
     background-clip: padding-box !important;
 }
@@ -144,6 +154,11 @@ function buildBaseRoundedCss(styleOptions: RoundedTabsStyleOptions): string {
 .monaco-workbench .part.editor > .content .editor-group-container > .title .title-actions .action-label {
     border-radius: var(--drkryz-roundedtabs-radius-sm) !important;
     background-clip: padding-box !important;
+}
+
+.monaco-workbench .part.editor > .content .editor-group-container > .title > .editor-actions,
+.monaco-workbench .part.editor > .content .editor-group-container > .title > .title-actions {
+    align-self: center;
 }
 
 .monaco-workbench .part.editor .breadcrumbs-control,
@@ -172,9 +187,7 @@ function buildBaseRoundedCss(styleOptions: RoundedTabsStyleOptions): string {
 .monaco-workbench .part.sidebar .monaco-pane-view > .monaco-split-view2 > .monaco-scrollable-element,
 .monaco-workbench .part.auxiliarybar .monaco-pane-view > .monaco-split-view2 > .monaco-scrollable-element,
 .monaco-workbench .part.sidebar .monaco-pane-view > .monaco-split-view2 > .monaco-scrollable-element > .split-view-container,
-.monaco-workbench .part.auxiliarybar .monaco-pane-view > .monaco-split-view2 > .monaco-scrollable-element > .split-view-container,
-.monaco-workbench .part.sidebar .monaco-pane-view > .monaco-split-view2 > .monaco-scrollable-element > .split-view-container > .split-view-view,
-.monaco-workbench .part.auxiliarybar .monaco-pane-view > .monaco-split-view2 > .monaco-scrollable-element > .split-view-container > .split-view-view {
+.monaco-workbench .part.auxiliarybar .monaco-pane-view > .monaco-split-view2 > .monaco-scrollable-element > .split-view-container {
     border-radius: var(--drkryz-roundedtabs-radius) !important;
     background-color: var(--drkryz-roundedtabs-sidebar-surface) !important;
     background-clip: padding-box !important;
@@ -210,8 +223,8 @@ function buildBaseRoundedCss(styleOptions: RoundedTabsStyleOptions): string {
 
 .monaco-workbench .part.sidebar .pane,
 .monaco-workbench .part.auxiliarybar .pane {
-    border-radius: var(--drkryz-roundedtabs-radius-sm) !important;
-    overflow: hidden !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
     background-color: transparent !important;
     background-clip: padding-box !important;
 }
@@ -232,6 +245,26 @@ function buildBaseRoundedCss(styleOptions: RoundedTabsStyleOptions): string {
 .monaco-workbench .part.sidebar .pane > .pane-body,
 .monaco-workbench .part.auxiliarybar .pane > .pane-body {
     background-color: transparent !important;
+}
+
+.monaco-workbench .part.sidebar .explorer-folders-view,
+.monaco-workbench .part.sidebar .tree-explorer-viewlet-tree-view,
+.monaco-workbench .part.sidebar .tree-explorer-viewlet-tree-view > .customview-tree,
+.monaco-workbench .part.sidebar .customview-tree,
+.monaco-workbench .part.sidebar .customview-tree > .monaco-list,
+.monaco-workbench .part.sidebar .customview-tree > .monaco-list > .monaco-scrollable-element,
+.monaco-workbench .part.sidebar .customview-tree > .monaco-list > .monaco-scrollable-element > .monaco-list-rows,
+.monaco-workbench .part.auxiliarybar .tree-explorer-viewlet-tree-view,
+.monaco-workbench .part.auxiliarybar .tree-explorer-viewlet-tree-view > .customview-tree,
+.monaco-workbench .part.auxiliarybar .customview-tree,
+.monaco-workbench .part.auxiliarybar .customview-tree > .monaco-list,
+.monaco-workbench .part.auxiliarybar .customview-tree > .monaco-list > .monaco-scrollable-element,
+.monaco-workbench .part.auxiliarybar .customview-tree > .monaco-list > .monaco-scrollable-element > .monaco-list-rows,
+.monaco-workbench .part.sidebar .monaco-pane-view > .monaco-split-view2 > .monaco-scrollable-element > .split-view-container > .split-view-view,
+.monaco-workbench .part.auxiliarybar .monaco-pane-view > .monaco-split-view2 > .monaco-scrollable-element > .split-view-container > .split-view-view {
+    min-height: 100%;
+    background-color: transparent !important;
+    border-radius: 0 !important;
 }
 
 .monaco-workbench .part.sidebar > .title .action-label,
@@ -267,11 +300,16 @@ function buildBalancedRoundedCss(): string {
 .monaco-workbench .part.activitybar .action-item .action-label,
 .monaco-workbench .part.panel .pane-header .action-label,
 .monaco-workbench .part.panel .composite.title .action-label,
-.monaco-workbench .part.titlebar .menubar > .menubar-menu-button,
 .monaco-workbench .part.titlebar .action-label,
 .monaco-workbench .part.titlebar .command-center-center,
 .monaco-workbench .part.titlebar .window-title {
     border-radius: var(--drkryz-roundedtabs-radius-sm) !important;
+    background-clip: padding-box !important;
+}
+
+.monaco-workbench .part.titlebar .menubar > .menubar-menu-button,
+.monaco-workbench .part.titlebar .menubar > .menubar-menu-button > .menubar-menu-title {
+    border-radius: var(--drkryz-roundedtabs-radius-xs) !important;
     background-clip: padding-box !important;
 }
 
@@ -299,32 +337,55 @@ function buildBalancedRoundedCss(): string {
 .monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-outer-container,
 .monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-groups-container,
 .monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-group,
+.monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-instance,
 .monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-split-pane,
 .monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-wrapper,
 .monaco-workbench .part.panel .pane-body.integrated-terminal .xterm,
+.monaco-workbench .part.panel .pane-body.integrated-terminal .xterm-rows,
 .monaco-workbench .part.panel .pane-body.integrated-terminal .xterm-screen,
 .monaco-workbench .part.panel .pane-body.integrated-terminal .xterm-viewport,
+.monaco-workbench .terminal-editor .terminal-instance,
 .monaco-workbench .terminal-editor .terminal-wrapper,
 .monaco-workbench .terminal-editor .terminal-group,
 .monaco-workbench .terminal-editor .terminal-split-pane,
 .monaco-workbench .terminal-editor .terminal-outer-container,
 .monaco-workbench .terminal-editor .xterm,
+.monaco-workbench .terminal-editor .xterm-rows,
 .monaco-workbench .terminal-editor .xterm-screen,
 .monaco-workbench .terminal-editor .xterm-viewport {
     background-color: var(--drkryz-roundedtabs-terminal-surface) !important;
     background-clip: padding-box !important;
 }
 
+.monaco-workbench .part.panel .pane-body.integrated-terminal,
+.monaco-workbench .terminal-editor {
+    overflow: hidden !important;
+}
+
 .monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-outer-container,
+.monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-instance,
 .monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-group,
 .monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-split-pane,
 .monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-wrapper,
 .monaco-workbench .terminal-editor .terminal-outer-container,
+.monaco-workbench .terminal-editor .terminal-instance,
 .monaco-workbench .terminal-editor .terminal-group,
 .monaco-workbench .terminal-editor .terminal-split-pane,
 .monaco-workbench .terminal-editor .terminal-wrapper {
     border-radius: var(--drkryz-roundedtabs-radius-md) !important;
     overflow: hidden !important;
+    box-shadow: inset 0 0 0 1px var(--drkryz-roundedtabs-widget-border) !important;
+}
+
+.monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-wrapper,
+.monaco-workbench .part.panel .pane-body.integrated-terminal .xterm,
+.monaco-workbench .part.panel .pane-body.integrated-terminal .xterm-screen,
+.monaco-workbench .part.panel .pane-body.integrated-terminal .xterm-viewport,
+.monaco-workbench .terminal-editor .terminal-wrapper,
+.monaco-workbench .terminal-editor .xterm,
+.monaco-workbench .terminal-editor .xterm-screen,
+.monaco-workbench .terminal-editor .xterm-viewport {
+    border-radius: inherit !important;
 }
 
 .monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-tabs-entry,
@@ -474,7 +535,6 @@ function buildAnimationCss(): string {
 .monaco-workbench .part.auxiliarybar > .title .action-label,
 .monaco-workbench .part.panel .pane-header .action-label,
 .monaco-workbench .part.activitybar .action-item .action-label,
-.monaco-workbench .part.titlebar .menubar > .menubar-menu-button,
 .monaco-workbench .part.titlebar .action-label,
 .monaco-workbench .part.titlebar .command-center-center,
 .quick-input-list .monaco-list-row,
@@ -486,13 +546,24 @@ function buildAnimationCss(): string {
         color var(--drkryz-roundedtabs-duration-fast) var(--drkryz-roundedtabs-ease),
         border-color var(--drkryz-roundedtabs-duration-fast) var(--drkryz-roundedtabs-ease),
         transform var(--drkryz-roundedtabs-duration-normal) var(--drkryz-roundedtabs-ease-soft),
-        opacity var(--drkryz-roundedtabs-duration-fast) var(--drkryz-roundedtabs-ease);
+        opacity var(--drkryz-roundedtabs-duration-fast) var(--drkryz-roundedtabs-ease),
+        margin var(--drkryz-roundedtabs-duration-normal) var(--drkryz-roundedtabs-ease-soft),
+        padding var(--drkryz-roundedtabs-duration-normal) var(--drkryz-roundedtabs-ease-soft),
+        max-width var(--drkryz-roundedtabs-duration-layout) var(--drkryz-roundedtabs-ease-soft),
+        width var(--drkryz-roundedtabs-duration-layout) var(--drkryz-roundedtabs-ease-soft);
+}
+
+.monaco-scrollable-element > .visible,
+.monaco-scrollable-element > .invisible.fade {
+    transition-duration: var(--drkryz-roundedtabs-duration-layout) !important;
+    transition-timing-function: var(--drkryz-roundedtabs-ease-soft) !important;
 }
 
 .monaco-workbench .part.editor > .content .editor-group-container > .title .tabs-container > .tab,
 .monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-tabs-entry,
 .monaco-workbench .terminal-editor .terminal-tabs-entry {
     animation: drkryz-roundedtabs-tab-enter var(--drkryz-roundedtabs-duration-normal) var(--drkryz-roundedtabs-ease-soft);
+    animation-fill-mode: both;
 }
 
 .monaco-workbench .part.editor > .content .editor-group-container > .title .tabs-container > .tab.active {
@@ -504,6 +575,8 @@ function buildAnimationCss(): string {
 .context-view .context-view-block,
 .monaco-workbench > .notifications-center,
 .monaco-workbench > .notifications-toasts .notification-toast-container > .notification-toast,
+.monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-wrapper,
+.monaco-workbench .terminal-editor .terminal-wrapper,
 .monaco-editor .find-widget,
 .monaco-editor .suggest-widget,
 .monaco-editor .parameter-hints-widget,
@@ -515,6 +588,21 @@ function buildAnimationCss(): string {
 .context-view .monaco-menu-container,
 .context-view .context-view-block {
     transform-origin: top left;
+}
+
+.monaco-workbench .part.titlebar .menubar > .menubar-menu-button,
+.monaco-workbench .part.titlebar .menubar > .menubar-menu-button > .menubar-menu-title,
+.menubar .menubar-menu-items-holder,
+.menubar .menubar-menu-items-holder.monaco-menu-container,
+.menubar .menubar-menu-items-holder .monaco-menu,
+.menubar .menubar-menu-items-holder .monaco-action-bar .action-label {
+    transform: none !important;
+    animation: none !important;
+}
+
+.menubar .menubar-menu-items-holder,
+.menubar .menubar-menu-items-holder.monaco-menu-container {
+    z-index: 4000 !important;
 }
 
 .quick-input-widget {
@@ -534,10 +622,15 @@ function buildAnimationCss(): string {
 .monaco-workbench .part.auxiliarybar > .title .action-label:hover,
 .monaco-workbench .part.panel .pane-header .action-label:hover,
 .monaco-workbench .part.activitybar .action-item .action-label:hover,
-.monaco-workbench .part.titlebar .menubar > .menubar-menu-button:hover,
 .monaco-workbench .part.titlebar .action-label:hover,
 .monaco-workbench .part.titlebar .command-center-center:hover {
     transform: translateY(-1px);
+}
+
+.monaco-workbench .part.titlebar .menubar > .menubar-menu-button:hover,
+.monaco-workbench .part.titlebar .menubar > .menubar-menu-button:focus,
+.monaco-workbench .part.titlebar .menubar > .menubar-menu-button.open {
+    transform: none !important;
 }
 
 .monaco-workbench .part.sidebar .monaco-list-row:hover,
@@ -565,13 +658,20 @@ function buildAnimationCss(): string {
     .monaco-workbench .part.auxiliarybar > .title .action-label,
     .monaco-workbench .part.panel .pane-header .action-label,
     .monaco-workbench .part.activitybar .action-item .action-label,
-    .monaco-workbench .part.titlebar .menubar > .menubar-menu-button,
     .monaco-workbench .part.titlebar .action-label,
     .monaco-workbench .part.titlebar .command-center-center,
     .quick-input-list .monaco-list-row,
     .context-view .monaco-menu .monaco-action-bar.vertical .action-item .action-label,
     .monaco-workbench > .notifications-center .notification-list-item,
     .monaco-workbench > .notifications-toasts .notification-list-item,
+    .menubar .menubar-menu-items-holder,
+    .menubar .menubar-menu-items-holder.monaco-menu-container,
+    .menubar .menubar-menu-items-holder .monaco-menu,
+    .menubar .menubar-menu-items-holder .monaco-action-bar .action-label,
+    .monaco-scrollable-element > .visible,
+    .monaco-scrollable-element > .invisible.fade,
+    .monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-wrapper,
+    .monaco-workbench .terminal-editor .terminal-wrapper,
     .quick-input-widget,
     .context-view .monaco-menu-container,
     .context-view .context-view-block,

@@ -9,6 +9,9 @@
 - Expanded rounded coverage across tabs, sidebars, auxiliary bar, activity bar, panels, quick input, notifications, context menus, breadcrumbs, title actions, input boxes, and safe editor widgets.
 - Added optional soft animations for tabs, menus, quick input, notifications, and header actions.
 - Improved tab entry motion for newly opened tabs and rounded the integrated terminal surface without gray background bleed.
+- Extended the motion layer to more VS Code layout transitions such as pane movement, split views, terminal surfaces, and terminal tabs.
+- Improved Explorer/sidebar wrapper coverage so the tree surface is applied more consistently across the full view.
+- Refreshed backup handling so RoundedTabs preserves the newest detected base workbench CSS before rewriting it.
 - Updated project dependencies and aligned the extension with newer VS Code engine support.
 
 ## 0.2.3

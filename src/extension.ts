@@ -11,6 +11,8 @@ import {
 } from "./workbenchCssManager";
 import { affectsRoundedTabsStyleConfiguration } from "./roundedTabsConfig";
 
+let suppressManagedStyleRefresh = false;
+
 export function activate(context: vscode.ExtensionContext) {
     const applyCommand = vscode.commands.registerCommand(
         "drkryz-roundedtabs.configure_now",
@@ -69,7 +71,7 @@ export function activate(context: vscode.ExtensionContext) {
     );
 
     const configurationListener = vscode.workspace.onDidChangeConfiguration((event) => {
-        if (!affectsRoundedTabsStyleConfiguration(event) || !isRoundedTabsApplied(context)) {
+        if (suppressManagedStyleRefresh || !affectsRoundedTabsStyleConfiguration(event) || !isRoundedTabsApplied(context)) {
             return;
         }
 
@@ -118,26 +120,64 @@ async function updateAnimationsSetting(
     const currentValue = configuration.get<boolean>("enableAnimations", DEFAULT_STYLE_OPTIONS.enableAnimations) === true;
 
     if (currentValue === enabled) {
+        if (isRoundedTabsApplied(context)) {
+            const result = await applyRoundedTabs(context);
+
+            if (result.changed) {
+                await promptReload("RoundedTabs refreshed the managed CSS block to sync your animation settings.");
+                return;
+            }
+
+            const message = enabled
+                ? "Soft animations are already enabled and the current workbench CSS is already in sync."
+                : "Soft animations are already disabled and the current workbench CSS is already in sync.";
+
+            void vscode.window.showInformationMessage(message);
+            return;
+        }
+
         const message = enabled
             ? "Soft animations are already enabled."
             : "Soft animations are already disabled.";
-        const followUp = isRoundedTabsApplied(context)
-            ? ""
-            : " Run Apply Rounded Tabs to inject the current visual settings into the workbench CSS.";
-
-        void vscode.window.showInformationMessage(`${message}${followUp}`);
+        void vscode.window.showInformationMessage(
+            `${message} Run Apply Rounded Tabs to inject the current visual settings into the workbench CSS.`
+        );
         return;
     }
 
-    await configuration.update("enableAnimations", enabled, vscode.ConfigurationTarget.Global);
+    suppressManagedStyleRefresh = true;
 
-    if (!isRoundedTabsApplied(context)) {
-        const message = enabled
-            ? "Soft animations were enabled. Run Apply Rounded Tabs to inject them into the current workbench CSS."
-            : "Soft animations were disabled. Run Apply Rounded Tabs if you want to remove them from the current workbench CSS.";
-
-        void vscode.window.showInformationMessage(message);
+    try {
+        await configuration.update("enableAnimations", enabled, vscode.ConfigurationTarget.Global);
+    } finally {
+        suppressManagedStyleRefresh = false;
     }
+
+    if (isRoundedTabsApplied(context)) {
+        const result = await applyRoundedTabs(context);
+
+        if (result.changed) {
+            await promptReload(
+                enabled
+                    ? "RoundedTabs enabled soft animations and refreshed the managed CSS block."
+                    : "RoundedTabs disabled soft animations and refreshed the managed CSS block."
+            );
+            return;
+        }
+
+        void vscode.window.showInformationMessage(
+            enabled
+                ? "Soft animations were enabled, but the current workbench CSS was already in sync."
+                : "Soft animations were disabled, but the current workbench CSS was already in sync."
+        );
+        return;
+    }
+
+    const message = enabled
+        ? "Soft animations were enabled. Run Apply Rounded Tabs to inject them into the current workbench CSS."
+        : "Soft animations were disabled. Run Apply Rounded Tabs if you want to remove them from the current workbench CSS.";
+
+    void vscode.window.showInformationMessage(message);
 }
 
 async function promptReload(message: string): Promise<void> {

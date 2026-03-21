@@ -46,6 +46,7 @@ suite('Extension Test Suite', () => {
 
 		assert.ok(patchedCss.includes('--drkryz-roundedtabs-radius: 18px;'));
 		assert.ok(patchedCss.includes('--drkryz-roundedtabs-gap: 3px;'));
+		assert.ok(patchedCss.includes('padding-top: 5px;'));
 	});
 
 	test('buildManagedWorkbenchCss protects key rounded surfaces with important rules', () => {
@@ -65,9 +66,11 @@ suite('Extension Test Suite', () => {
 		assert.ok(patchedCss.includes('--drkryz-roundedtabs-terminal-surface: var(--vscode-terminal-background'));
 		assert.ok(patchedCss.includes('.monaco-workbench .part.sidebar > .title'));
 		assert.ok(patchedCss.includes('.monaco-workbench .part.sidebar > .content > .composite'));
-		assert.ok(patchedCss.includes('.monaco-workbench .part.sidebar .pane > .pane-body {\n    background-color: transparent !important;'));
+		assert.ok(patchedCss.includes('.monaco-workbench .part.sidebar .explorer-folders-view'));
+		assert.ok(patchedCss.includes('.monaco-workbench .part.sidebar .pane > .pane-body'));
 		assert.ok(patchedCss.includes('.monaco-workbench .part.titlebar .command-center-center'));
 		assert.ok(patchedCss.includes('.monaco-editor .suggest-widget'));
+		assert.ok(patchedCss.includes('.monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-instance'));
 		assert.ok(patchedCss.includes('.monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-outer-container'));
 	});
 
@@ -91,6 +94,10 @@ suite('Extension Test Suite', () => {
 		assert.ok(!defaultCss.includes('@keyframes drkryz-roundedtabs-surface-in'));
 		assert.ok(animatedCss.includes('@keyframes drkryz-roundedtabs-surface-in'));
 		assert.ok(animatedCss.includes('@keyframes drkryz-roundedtabs-tab-enter'));
+		assert.ok(animatedCss.includes('.monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-wrapper'));
+		assert.ok(!animatedCss.includes('.monaco-pane-view.animated .split-view-view'));
+		assert.ok(animatedCss.includes('.menubar .menubar-menu-items-holder.monaco-menu-container'));
+		assert.ok(animatedCss.includes('z-index: 4000 !important;'));
 		assert.ok(animatedCss.includes('transition:'));
 		assert.ok(animatedCss.includes('.context-view .monaco-menu-container'));
 		assert.ok(animatedCss.includes('.monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-tabs-entry'));

@@ -18,6 +18,9 @@ interface RoundedTabsState {
     baseHash?: string;
     targetPath?: string;
     updatedAt?: string;
+    backupHash?: string;
+    backupTargetPath?: string;
+    backupUpdatedAt?: string;
 }
 
 interface RepairResult {
@@ -38,13 +41,15 @@ interface RestoreResult {
 }
 
 export async function applyRoundedTabs(context: vscode.ExtensionContext): Promise<ApplyResult> {
+    const currentState = readState(context);
     const targetPath = await resolveWorkbenchCssPath();
     const currentCss = readWorkbenchCss(targetPath);
     const hadManagedBlock = hasManagedRoundedTabsBlock(currentCss);
     const baseCss = stripManagedRoundedTabsBlock(currentCss);
+    const nextBaseHash = createContentHash(baseCss);
     const patchedCss = buildManagedWorkbenchCss(baseCss, getRoundedTabsStyleOptions());
 
-    if (!hadManagedBlock || !existsSync(getBackupFilePath(context))) {
+    if (shouldRefreshBackup(context, currentState, targetPath, nextBaseHash, hadManagedBlock)) {
         writeBackup(context, baseCss);
     }
 
@@ -54,9 +59,12 @@ export async function applyRoundedTabs(context: vscode.ExtensionContext): Promis
 
     writeState(context, {
         applied: true,
-        baseHash: createContentHash(baseCss),
+        baseHash: nextBaseHash,
         targetPath,
         updatedAt: new Date().toISOString(),
+        backupHash: nextBaseHash,
+        backupTargetPath: targetPath,
+        backupUpdatedAt: new Date().toISOString(),
     });
 
     return {
@@ -81,6 +89,9 @@ export async function restoreRoundedTabs(context: vscode.ExtensionContext): Prom
         baseHash: createContentHash(restoredCss),
         targetPath,
         updatedAt: new Date().toISOString(),
+        backupHash: currentState.backupHash,
+        backupTargetPath: currentState.backupTargetPath,
+        backupUpdatedAt: currentState.backupUpdatedAt,
     });
 
     return {
@@ -112,9 +123,9 @@ export async function repairRoundedTabsOnStartup(
     const baseCss = stripManagedRoundedTabsBlock(currentCss);
     const patchedCss = buildManagedWorkbenchCss(baseCss, getRoundedTabsStyleOptions());
     const nextBaseHash = createContentHash(baseCss);
-    const shouldRefreshBackup = !hadManagedBlock || currentState.baseHash !== nextBaseHash;
+    const shouldWriteBackup = shouldRefreshBackup(context, currentState, targetPath, nextBaseHash, hadManagedBlock);
 
-    if (shouldRefreshBackup) {
+    if (shouldWriteBackup) {
         writeBackup(context, baseCss);
     }
 
@@ -124,6 +135,11 @@ export async function repairRoundedTabsOnStartup(
             baseHash: nextBaseHash,
             targetPath,
             updatedAt: currentState.updatedAt ?? new Date().toISOString(),
+            backupHash: nextBaseHash,
+            backupTargetPath: targetPath,
+            backupUpdatedAt: shouldWriteBackup
+                ? new Date().toISOString()
+                : currentState.backupUpdatedAt ?? currentState.updatedAt ?? new Date().toISOString(),
         });
 
         return { changed: false, targetPath };
@@ -135,6 +151,11 @@ export async function repairRoundedTabsOnStartup(
         baseHash: nextBaseHash,
         targetPath,
         updatedAt: new Date().toISOString(),
+        backupHash: nextBaseHash,
+        backupTargetPath: targetPath,
+        backupUpdatedAt: shouldWriteBackup
+            ? new Date().toISOString()
+            : currentState.backupUpdatedAt ?? new Date().toISOString(),
     });
 
     return {
@@ -328,6 +349,19 @@ function createWriteErrorMessage(targetPath: string, error: unknown): string {
     }
 
     return `Unable to update ${targetPath}: ${errorMessage}`;
+}
+
+function shouldRefreshBackup(
+    context: vscode.ExtensionContext,
+    state: RoundedTabsState,
+    targetPath: string,
+    baseHash: string,
+    hadManagedBlock: boolean
+): boolean {
+    return !hadManagedBlock
+        || !existsSync(getBackupFilePath(context))
+        || state.backupHash !== baseHash
+        || state.backupTargetPath !== targetPath;
 }
 
 function writeBackup(context: vscode.ExtensionContext, content: string): void {

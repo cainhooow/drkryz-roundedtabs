@@ -17,11 +17,12 @@ That means the extension stays reversible, safer across VS Code updates, and eas
 ## Highlights
 
 - Keeps the original VS Code workbench CSS intact and injects only a managed block.
+- Refreshes its local backup whenever the current base workbench CSS changes, so new styles are always layered on top of the latest VS Code file.
 - Removes only its own block on restore, without overwriting the rest of the file.
 - Can reapply styles after VS Code updates replace the workbench CSS file.
 - Supports broader rounded surfaces with a safer `balanced` preset.
-- Includes optional soft animations for tabs, menus, quick input, notifications, and header actions.
-- Smooths tab creation a bit more and rounds the integrated terminal without exposing the panel background.
+- Includes optional soft animations for tabs, panes, menus, quick input, notifications, terminal tabs, and header actions.
+- Smooths tab creation, Explorer motion, and integrated terminal surfaces without exposing the panel background.
 
 <div align="center">
 <h1>Commands</h1>
@@ -40,7 +41,7 @@ That means the extension stays reversible, safer across VS Code updates, and eas
 ### Enable Soft Animations
 - **Command:** `drkryz-roundedtabs.enableAnimations`
 - **Description:** Enables subtle CSS animations for tabs, context menus, quick input, notifications, and safe title/header actions.
-- **Instructions:** Run the command, then reapply RoundedTabs if it is not already active. If RoundedTabs is active, the extension refreshes the managed CSS block automatically.
+- **Instructions:** If RoundedTabs is already active, the extension refreshes the managed CSS block immediately and prompts for reload. If RoundedTabs is not active yet, run `Apply Rounded Tabs` after enabling it.
 
 ### Disable Soft Animations
 - **Command:** `drkryz-roundedtabs.disableAnimations`
@@ -52,6 +53,7 @@ That means the extension stays reversible, safer across VS Code updates, and eas
 - RoundedTabs locates the active `workbench.desktop.main.css` from the current VS Code installation.
 - It strips any old RoundedTabs managed block and appends a fresh one based on the current settings.
 - It stores backup and state data in extension storage instead of shipping a stale CSS file inside the extension.
+- Before rewriting the workbench CSS, it refreshes its backup whenever the detected base CSS or target file changes.
 - If `drkryz-roundedtabs.autoReapplyOnStartup` is enabled, it can repair the injected block after an update changes the workbench CSS file.
 
 ## Settings
@@ -76,7 +78,8 @@ That means the extension stays reversible, safer across VS Code updates, and eas
 - Activity bar and panel surfaces
 - Titlebar command center and safe header actions
 - Quick input, notifications, and context menus
-- Integrated terminal containers and terminal tab entries
+- Explorer wrappers and sidebar tree containers
+- Integrated terminal containers, terminal tab entries, and terminal surface wrappers
 - Input boxes and safe editor widgets such as suggest, find, hover, and rename
 
 ## Safety Notes
