@@ -61,7 +61,14 @@ suite('Extension Test Suite', () => {
 		assert.ok(patchedCss.includes('--drkryz-roundedtabs-editor-surface: var(--vscode-editorGroupHeader-tabsBackground'));
 		assert.ok(patchedCss.includes('background-color: var(--drkryz-roundedtabs-sidebar-surface) !important;'));
 		assert.ok(patchedCss.includes('background-color: var(--drkryz-roundedtabs-panel-surface) !important;'));
+		assert.ok(patchedCss.includes('--drkryz-roundedtabs-sidebar-header-surface: var(--vscode-sideBarSectionHeader-background'));
+		assert.ok(patchedCss.includes('--drkryz-roundedtabs-terminal-surface: var(--vscode-terminal-background'));
 		assert.ok(patchedCss.includes('.monaco-workbench .part.sidebar > .title'));
+		assert.ok(patchedCss.includes('.monaco-workbench .part.sidebar > .content > .composite'));
+		assert.ok(patchedCss.includes('.monaco-workbench .part.sidebar .pane > .pane-body {\n    background-color: transparent !important;'));
+		assert.ok(patchedCss.includes('.monaco-workbench .part.titlebar .command-center-center'));
+		assert.ok(patchedCss.includes('.monaco-editor .suggest-widget'));
+		assert.ok(patchedCss.includes('.monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-outer-container'));
 	});
 
 	test('tabs-only preset skips extended workbench rounding', () => {
@@ -72,5 +79,20 @@ suite('Extension Test Suite', () => {
 
 		assert.ok(!patchedCss.includes('.monaco-workbench .part.panel > .content'));
 		assert.ok(!patchedCss.includes('.quick-input-widget'));
+	});
+
+	test('animations stay opt-in and add a managed motion block when enabled', () => {
+		const defaultCss = buildManagedWorkbenchCss(baseCss);
+		const animatedCss = buildManagedWorkbenchCss(baseCss, {
+			...DEFAULT_STYLE_OPTIONS,
+			enableAnimations: true,
+		});
+
+		assert.ok(!defaultCss.includes('@keyframes drkryz-roundedtabs-surface-in'));
+		assert.ok(animatedCss.includes('@keyframes drkryz-roundedtabs-surface-in'));
+		assert.ok(animatedCss.includes('@keyframes drkryz-roundedtabs-tab-enter'));
+		assert.ok(animatedCss.includes('transition:'));
+		assert.ok(animatedCss.includes('.context-view .monaco-menu-container'));
+		assert.ok(animatedCss.includes('.monaco-workbench .part.panel .pane-body.integrated-terminal .terminal-tabs-entry'));
 	});
 });

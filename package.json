@@ -1,18 +1,21 @@
 {
   "name": "drkryz-roundedtabs",
   "displayName": "Drkryz RoundedTabs",
-  "description": "Add rounded edges to your vscode guides. Make almost everything more modern!",
+  "description": "Safely inject rounded tabs, softer workbench surfaces, and optional animations into VS Code while keeping the original workbench CSS reversible.",
   "publisher": "drkryz",
   "icon": "dist/icon/logo_bg_none.png",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "galleryBanner": {
     "color": "#070707",
     "theme": "dark"
   },
   "keywords": [
-    "Custom VSCode Theme",
-    "Custom VSCode Workbench",
-    "Custom VSCode Workbench css"
+    "rounded tabs",
+    "vscode ui",
+    "workbench css",
+    "custom vscode",
+    "soft ui",
+    "vscode animations"
   ],
   "engines": {
     "vscode": "^1.110.0"
@@ -28,7 +31,9 @@
   "activationEvents": [
     "onStartupFinished",
     "onCommand:drkryz-roundedtabs.configure_now",
-    "onCommand:drkryz-roundedtabs.restore"
+    "onCommand:drkryz-roundedtabs.restore",
+    "onCommand:drkryz-roundedtabs.enableAnimations",
+    "onCommand:drkryz-roundedtabs.disableAnimations"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -67,6 +72,11 @@
           "maximum": 12,
           "description": "Gap used between editor tabs when RoundedTabs is active."
         },
+        "drkryz-roundedtabs.enableAnimations": {
+          "type": "boolean",
+          "default": false,
+          "description": "Adds subtle animations to tabs, quick input, context menus, notifications, and header actions. Disabled by default to keep the workbench conservative."
+        },
         "drkryz-roundedtabs.installPath": {
           "type": "string",
           "default": "",
@@ -85,6 +95,18 @@
         "command": "drkryz-roundedtabs.restore",
         "title": "Restore Defaults",
         "shortTitle": "Restore VS Code Defaults",
+        "category": "RoundedTabs"
+      },
+      {
+        "command": "drkryz-roundedtabs.enableAnimations",
+        "title": "Enable Soft Animations",
+        "shortTitle": "Enable Soft Animations",
+        "category": "RoundedTabs"
+      },
+      {
+        "command": "drkryz-roundedtabs.disableAnimations",
+        "title": "Disable Soft Animations",
+        "shortTitle": "Disable Soft Animations",
         "category": "RoundedTabs"
       }
     ]

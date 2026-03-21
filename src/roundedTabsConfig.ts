@@ -4,6 +4,7 @@ const CONFIG_NAMESPACE = "drkryz-roundedtabs";
 const STYLE_PRESET_KEY = `${CONFIG_NAMESPACE}.stylePreset`;
 const RADIUS_KEY = `${CONFIG_NAMESPACE}.radius`;
 const TAB_GAP_KEY = `${CONFIG_NAMESPACE}.tabGap`;
+const ENABLE_ANIMATIONS_KEY = `${CONFIG_NAMESPACE}.enableAnimations`;
 
 type RoundedTabsStylePreset = "tabs-only" | "balanced";
 
@@ -11,12 +12,14 @@ interface RoundedTabsStyleOptions {
     preset: RoundedTabsStylePreset;
     radius: number;
     tabGap: number;
+    enableAnimations: boolean;
 }
 
 const DEFAULT_STYLE_OPTIONS: RoundedTabsStyleOptions = {
     preset: "balanced",
     radius: 12,
     tabGap: 6,
+    enableAnimations: false,
 };
 
 export function getRoundedTabsStyleOptions(
@@ -25,18 +28,21 @@ export function getRoundedTabsStyleOptions(
     const preset = normalizePreset(configuration.get<string>("stylePreset", DEFAULT_STYLE_OPTIONS.preset));
     const radius = clampNumber(configuration.get<number>("radius", DEFAULT_STYLE_OPTIONS.radius), 6, 24, DEFAULT_STYLE_OPTIONS.radius);
     const tabGap = clampNumber(configuration.get<number>("tabGap", DEFAULT_STYLE_OPTIONS.tabGap), 0, 12, DEFAULT_STYLE_OPTIONS.tabGap);
+    const enableAnimations = configuration.get<boolean>("enableAnimations", DEFAULT_STYLE_OPTIONS.enableAnimations) === true;
 
     return {
         preset,
         radius,
         tabGap,
+        enableAnimations,
     };
 }
 
 export function affectsRoundedTabsStyleConfiguration(event: vscode.ConfigurationChangeEvent): boolean {
     return event.affectsConfiguration(STYLE_PRESET_KEY)
         || event.affectsConfiguration(RADIUS_KEY)
-        || event.affectsConfiguration(TAB_GAP_KEY);
+        || event.affectsConfiguration(TAB_GAP_KEY)
+        || event.affectsConfiguration(ENABLE_ANIMATIONS_KEY);
 }
 
 function getVscodeApi(): typeof import("vscode") {
