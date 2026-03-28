@@ -4,7 +4,7 @@
   "description": "Safely inject rounded tabs, softer workbench surfaces, and optional animations into VS Code while keeping the original workbench CSS reversible.",
   "publisher": "drkryz",
   "icon": "dist/icon/logo_bg_none.png",
-  "version": "0.4.1",
+  "version": "0.4.3",
   "galleryBanner": {
     "color": "#070707",
     "theme": "dark"
